@@ -7,7 +7,6 @@ matrix:
     - dotnet: 1.0.1 # This is the _SDK_version. 1.0.1 = runtimes 1.0.4 and 1.1.1
       # 1.0.1 chosen because it's the lowest one on the stable 1.0.4 runtime. 
       # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
-      mono: none
       env: DOTNETCORE=1
     - mono: 4.2.1 # this is the default on Ubuntu 16.04 LTS. And it's a 4.x release so it's dotnet profile 4.5
     - mono: latest
@@ -16,4 +15,3 @@ matrix:
     - mono: latest
 script:
   - ./build.sh --target "Travis"
-  
