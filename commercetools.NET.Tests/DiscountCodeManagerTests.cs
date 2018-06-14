@@ -11,7 +11,7 @@ using NUnit.Framework;
 using ChangeIsActiveAction = commercetools.DiscountCodes.UpdateActions.ChangeIsActiveAction;
 using SetDescriptionAction = commercetools.DiscountCodes.UpdateActions.SetDescriptionAction;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     public class DiscountCodeManagerTests
     {
@@ -88,7 +88,7 @@ namespace commercetools.Tests
             DiscountCodeQueryResult discountCode = response.Result;
             Assert.NotNull(discountCode);
             Assert.AreEqual(1, discountCode.Count);
-            discountCode.Results.ShouldAllBeEquivalentTo(new [] { _testDiscountCode });
+            discountCode.Results.Should().AllBeEquivalentTo(new [] { _testDiscountCode });
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace commercetools.Tests
             Assert.AreEqual(discountCodeDraft.IsActive, discountCode.IsActive);
             Assert.AreEqual(discountCodeDraft.MaxApplications, discountCode.MaxApplications);
             Assert.AreEqual(discountCodeDraft.MaxApplicationsPerCustomer, discountCode.MaxApplicationsPerCustomer);
-            discountCode.CartDiscounts.ShouldAllBeEquivalentTo(cartDiscountReferences);
+            discountCode.CartDiscounts.Should().AllBeEquivalentTo(cartDiscountReferences);
 
             // Cleanup
             await Helper.DeleteDiscountCode(this._client, discountCode);
@@ -353,7 +353,7 @@ namespace commercetools.Tests
             var updatedDiscountCode = updatedDiscountCodeResponse.Result;
             Assert.IsNotNull(updatedDiscountCode);
             Assert.IsNotNull(updatedDiscountCode.Id);
-            updatedDiscountCode.CartDiscounts.ShouldAllBeEquivalentTo(changeCartDiscounts.CartDiscounts);
+            updatedDiscountCode.CartDiscounts.Should().AllBeEquivalentTo(changeCartDiscounts.CartDiscounts);
 
             // Cleanup
             await Helper.DeleteDiscountCode(this._client, updatedDiscountCode);

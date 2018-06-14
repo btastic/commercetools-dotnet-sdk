@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.CartDiscounts;
-using commercetools.Common;
-using commercetools.Common.UpdateActions;
 using commercetools.Carts;
 using commercetools.Carts.UpdateActions;
+using commercetools.Common;
+using commercetools.Common.UpdateActions;
 using commercetools.Customers;
 using commercetools.Messages;
 using commercetools.Payments;
@@ -19,13 +19,11 @@ using commercetools.Types;
 using commercetools.Zones;
 using commercetools.Zones.UpdateActions;
 using FluentAssertions;
-using NUnit.Framework;
-
 using Newtonsoft.Json.Linq;
-
+using NUnit.Framework;
 using Type = commercetools.Types.Type;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the CartManager class, along with some of the cart update actions.

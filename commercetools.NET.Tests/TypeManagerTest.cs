@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using commercetools.Common;
 using commercetools.Common.UpdateActions;
-using commercetools.Carts;
 using commercetools.Customers;
-using commercetools.Customers.UpdateActions;
 using commercetools.Messages;
 using commercetools.Project;
 using commercetools.Types;
-
-using NUnit.Framework;
-
-using Type = commercetools.Types.Type;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework;
+using Type = commercetools.Types.Type;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the TypeManager class.

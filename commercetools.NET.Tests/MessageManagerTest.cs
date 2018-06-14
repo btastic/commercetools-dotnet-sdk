@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Common;
-using commercetools.Common.UpdateActions;
 using commercetools.Messages;
-using System.Linq;
-using NUnit.Framework;
 using commercetools.Products;
-using commercetools.Project;
 using commercetools.ProductTypes;
+using commercetools.Project;
 using commercetools.TaxCategories;
+using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the CustomerManager class.

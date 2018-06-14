@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using commercetools.Common;
 using commercetools.Common.UpdateActions;
 using commercetools.Products;
@@ -9,10 +8,9 @@ using commercetools.Products.UpdateActions;
 using commercetools.ProductTypes;
 using commercetools.Project;
 using commercetools.TaxCategories;
-
 using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the ProductManager class.

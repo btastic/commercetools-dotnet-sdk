@@ -1,28 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.CartDiscounts;
 using commercetools.Carts;
 using commercetools.Categories;
-using commercetools.Customers;
 using commercetools.Common;
+using commercetools.Customers;
 using commercetools.DiscountCodes;
 using commercetools.Orders;
 using commercetools.Payments;
 using commercetools.Products;
 using commercetools.ProductTypes;
 using commercetools.ShippingMethods;
+using commercetools.Subscriptions;
 using commercetools.TaxCategories;
 using commercetools.Types;
 using commercetools.Zones;
-
+using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 using Configuration = commercetools.Common.Configuration;
 using ReferenceType = commercetools.Common.ReferenceType;
-using commercetools.Subscriptions;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Common definitions and methods used for tests.
@@ -42,13 +44,18 @@ namespace commercetools.Tests
         {
             if (_configuration == null)
             {
-                _configuration = new Configuration(
-                    Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.OAuthUrl"]),
-                    Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ApiUrl"]),
-                    Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ProjectKey"]),
-                    Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ClientID"]),
-                    Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ClientSecret"]),
-                    ProjectScope.ManageProject);
+                var configurationBuilder = new ConfigurationBuilder()
+                    .SetBasePath(System.AppContext.BaseDirectory)
+                    .AddJsonFile("appsettings.json")
+                    .AddEnvironmentVariables().Build();
+            
+                var _configuration = new Common.Configuration(
+                        configurationBuilder["commercetools.OAuthUrl"],
+                        configurationBuilder["commercetools.ApiUrl"],
+                        configurationBuilder["commercetools.ProjectKey"],
+                        configurationBuilder["commercetools.ClientID"],
+                        configurationBuilder["commercetools.ClientSecret"],
+                        ProjectScope.ManageProject);
             }          
 
             return _configuration;

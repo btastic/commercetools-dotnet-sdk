@@ -8,7 +8,7 @@ using commercetools.Project;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the CartDiscountManager class, along with some of the cart update actions.
@@ -26,6 +26,7 @@ namespace commercetools.Tests
         [OneTimeSetUp]
         public void Init()
         {
+            
             _client = new Client(Helper.GetConfiguration());
 
             Task<Response<Project.Project>> projectTask = _client.Project().GetProjectAsync();
@@ -98,8 +99,8 @@ namespace commercetools.Tests
             Assert.That(cartDiscountDraft.ValidUntil, Is.EqualTo(cartDiscount.ValidUntil).Within(1).Seconds);
             Assert.AreEqual(cartDiscountDraft.IsActive, cartDiscount.IsActive);
             Assert.AreEqual(cartDiscountDraft.RequiresDiscountCode, cartDiscount.RequiresDiscountCode);
-            cartDiscount.Target.ShouldBeEquivalentTo(cartDiscountDraft.Target);
-            cartDiscount.Value.ShouldBeEquivalentTo(cartDiscountDraft.Value);
+            cartDiscount.Target.Should().BeEquivalentTo(cartDiscountDraft.Target);
+            cartDiscount.Value.Should().BeEquivalentTo(cartDiscountDraft.Value);
 
             // Cleanup
             await _client.CartDiscounts().DeleteCartDiscountAsync(cartDiscount);
@@ -226,7 +227,7 @@ namespace commercetools.Tests
             var updatedCartDiscount = updatedCartDiscountResponse.Result;
             Assert.IsNotNull(updatedCartDiscount);
             Assert.IsNotNull(updatedCartDiscount.Id);
-            updatedCartDiscount.Target.ShouldBeEquivalentTo(changetarget.Target);
+            updatedCartDiscount.Target.Should().BeEquivalentTo(changetarget.Target);
 
             // Cleanup
             await _client.CartDiscounts().DeleteCartDiscountAsync(updatedCartDiscount);
@@ -252,7 +253,7 @@ namespace commercetools.Tests
             var updatedCartDiscount = updatedCartDiscountResponse.Result;
             Assert.IsNotNull(updatedCartDiscount);
             Assert.IsNotNull(updatedCartDiscount.Id);
-            updatedCartDiscount.Value.ShouldBeEquivalentTo(changeValue.Value);
+            updatedCartDiscount.Value.Should().BeEquivalentTo(changeValue.Value);
 
             // Cleanup
             await _client.CartDiscounts().DeleteCartDiscountAsync(updatedCartDiscount);
@@ -276,7 +277,7 @@ namespace commercetools.Tests
             var updatedCartDiscount = updatedCartDiscountResponse.Result;
             Assert.IsNotNull(updatedCartDiscount);
             Assert.IsNotNull(updatedCartDiscount.Id);
-            updatedCartDiscount.SortOrder.ShouldBeEquivalentTo(changeSortOrder.SortOrder);
+            updatedCartDiscount.SortOrder.Should().BeEquivalentTo(changeSortOrder.SortOrder);
 
             // Cleanup
             await _client.CartDiscounts().DeleteCartDiscountAsync(updatedCartDiscount);

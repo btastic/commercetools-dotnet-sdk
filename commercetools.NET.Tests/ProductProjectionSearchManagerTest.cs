@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using commercetools.Common;
-using commercetools.Project;
-using commercetools.ProductTypes;
 using commercetools.ProductProjections;
 using commercetools.ProductProjectionSearch;
 using commercetools.Products;
 using commercetools.Products.UpdateActions;
+using commercetools.ProductTypes;
+using commercetools.Project;
 using commercetools.TaxCategories;
-
 using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the ProductProjectionSearchManager class.

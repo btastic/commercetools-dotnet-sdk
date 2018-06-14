@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Threading.Tasks;
 
 using commercetools.Common;
 using commercetools.Project;
+using Microsoft.Extensions.Configuration;
 
-using Configuration = commercetools.Common.Configuration;
 
 namespace commercetools.Examples
 {
@@ -19,12 +20,14 @@ namespace commercetools.Examples
     /// </summary>
     public class Program
     {
+        
+        
         /// <summary>
         /// Main
         /// </summary>
         /// <param name="args">Arguments</param>
         public static void Main(string[] args)
-        {
+        {            
             new Program().Run().Wait();
         }
 
@@ -39,12 +42,16 @@ namespace commercetools.Examples
              *  Set up the Configuration object with your project information and use it to create
              *  and instance of the Client object.
              */
-            Configuration configuration = new Configuration(
-                Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.OAuthUrl"]),
-                Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ApiUrl"]),
-                Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ProjectKey"]),
-                Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ClientID"]),
-                Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ClientSecret"]),
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json").Build();
+            
+            var configuration = new Common.Configuration(
+                    configurationBuilder["commercetools.OAuthUrl"],
+                    configurationBuilder["commercetools.ApiUrl"],
+                    configurationBuilder["commercetools.ProjectKey"],
+                    configurationBuilder["commercetools.ClientID"],
+                    configurationBuilder["commercetools.ClientSecret"],
                 ProjectScope.ManageProject);
             
             Client client = new Client(configuration);            
@@ -72,9 +79,7 @@ namespace commercetools.Examples
             await CategoryExamples.Run(client, project);
             await OrderExamples.Run(client, project);
             await ProductExamples.Run(client, project);
-                        
-
-           
+                                   
         }
     }
 }

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using commercetools.Common;
-using commercetools.Common.UpdateActions;
 using commercetools.Categories;
 using commercetools.Categories.UpdateActions;
+using commercetools.Common;
+using commercetools.Common.UpdateActions;
 using commercetools.Project;
-
 using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the CategoryManager class.

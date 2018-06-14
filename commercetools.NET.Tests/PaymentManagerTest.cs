@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using commercetools.Common;
 using commercetools.Common.UpdateActions;
 using commercetools.Customers;
+using commercetools.Messages;
 using commercetools.Payments;
 using commercetools.Payments.UpdateActions;
-using commercetools.Messages;
 using commercetools.Project;
-
 using Newtonsoft.Json.Linq;
-
 using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the PaymentManager class.

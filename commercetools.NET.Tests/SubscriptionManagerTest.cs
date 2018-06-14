@@ -1,12 +1,12 @@
-﻿using commercetools.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using commercetools.Common;
 using commercetools.Project;
 using commercetools.Subscriptions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the CustomerManager class.

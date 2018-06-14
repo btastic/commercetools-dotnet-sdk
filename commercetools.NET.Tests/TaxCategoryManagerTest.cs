@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using commercetools.Common;
 using commercetools.Common.UpdateActions;
 using commercetools.Project;
 using commercetools.TaxCategories;
-
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-using Newtonsoft.Json.Linq;
-
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the TaxCategoryManager class.

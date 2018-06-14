@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
-
 using commercetools.Common;
 using commercetools.Project;
-
 using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the ProjectManager class.

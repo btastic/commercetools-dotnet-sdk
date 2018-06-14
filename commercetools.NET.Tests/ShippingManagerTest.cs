@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using commercetools.Common;
 using commercetools.Common.UpdateActions;
 using commercetools.Project;
@@ -10,10 +9,9 @@ using commercetools.ShippingMethods;
 using commercetools.TaxCategories;
 using commercetools.Zones;
 using commercetools.Zones.UpdateActions;
-
 using NUnit.Framework;
 
-namespace commercetools.Tests
+namespace commercetools.NET.Tests
 {
     /// <summary>
     /// Test the API methods in the ShippingMethodManager class.
