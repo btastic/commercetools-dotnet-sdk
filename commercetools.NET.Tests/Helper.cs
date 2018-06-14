@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using commercetools.CartDiscounts;
 using commercetools.Carts;
@@ -20,6 +21,7 @@ using commercetools.TaxCategories;
 using commercetools.Types;
 using commercetools.Zones;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Configuration = commercetools.Common.Configuration;
 using ReferenceType = commercetools.Common.ReferenceType;
@@ -49,7 +51,7 @@ namespace commercetools.NET.Tests
                     .AddJsonFile("appsettings.json")
                     .AddEnvironmentVariables().Build();
             
-                var _configuration = new Common.Configuration(
+                 _configuration = new Common.Configuration(
                         configurationBuilder["commercetools.OAuthUrl"],
                         configurationBuilder["commercetools.ApiUrl"],
                         configurationBuilder["commercetools.ProjectKey"],
