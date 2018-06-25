@@ -4,7 +4,7 @@ before_build:
   - ps: dotnet restore
 build_script:
   - ps: dotnet build
-  - ps: dotnet pack ./commercetools.NET/commercetools.NET.csproj --output ./../build/packages/
+  - ps: dotnet pack ./commercetools.NET/commercetools.NET.csproj --output ./../build/package/
 artifacts:
-  - path: ./build/package/**/*.nupkg
+  - path: build/package/**/*.nupkg
     name: NuGet Package
