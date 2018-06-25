@@ -30,7 +30,9 @@ var packageVersion = version + modifier + dbgSuffix;
 
 var AllFrameworks = new string[]
 {
-    "netstandard2.0"
+    "netstandard2.0",
+    "net46",
+    "netcoreapp2.0"
 };
 
 //////////////////////////////////////////////////////////////////////

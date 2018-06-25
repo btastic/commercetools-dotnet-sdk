@@ -21,7 +21,6 @@ using commercetools.TaxCategories;
 using commercetools.Types;
 using commercetools.Zones;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Configuration = commercetools.Common.Configuration;
 using ReferenceType = commercetools.Common.ReferenceType;
@@ -62,6 +61,8 @@ namespace commercetools.NET.Tests
 
             return _configuration;
         }
+        
+        public static HttpClient HttpClient { get; } = new HttpClient();
 
         #endregion
 

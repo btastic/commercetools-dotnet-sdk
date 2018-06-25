@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Numerics;
+using Newtonsoft.Json;
 
 namespace commercetools.Common
 {
