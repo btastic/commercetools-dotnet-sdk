@@ -1,10 +1,16 @@
 image: Visual Studio 2017
 
-before_build:
-  - ps: dotnet restore
 build_script:
-  - ps: dotnet build
-  - ps: dotnet pack ./commercetools.NET/commercetools.NET.csproj --output ./../build/package/
-artifacts:
-  - path: build/package/**/*.nupkg
-    name: NuGet Package
+  - ps: .\build.ps1 -Target "Appveyor"
+
+# disable built-in tests.
+test: off
+
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/commercetools-dotnet-sdk/api/v2/package
+  api_key:
+    secure: wODMBph/C6fpMj92W0EfeV0teSwNDK69RdAxys+4VHbEgv/Cqrwino+Q1rLGBc5w
+  skip_symbols: true
+  on:
+    branch: master

@@ -31,8 +31,8 @@ var packageVersion = version + modifier + dbgSuffix;
 var AllFrameworks = new string[]
 {
     "netstandard2.0",
-    "net46",
-    "netcoreapp2.0"
+    "net46"
+    "netcoreapp2.1"
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -140,7 +140,7 @@ Task("Build")
     .IsDependentOn("NuGetRestore")
     .Does(() =>
     {
-        MSBuild(SOLUTION_FILE, CreateSettings());
+        DotNetCoreBuild(SOLUTION_FILE);
     });
 
 MSBuildSettings CreateSettings()
