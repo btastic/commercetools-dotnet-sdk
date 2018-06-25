@@ -1,7 +1,7 @@
 language: csharp
 sudo: false
 
-dotnet: 2.1.4 # SDK version; includes runtime version 2.0.5. Need 2.0+ for netcoreapp2.0 tests.
+dotnet: 2.1.300 # SDK version; includes runtime version 2.0.5. Need 2.0+ for netcoreapp2.0 tests.
 mono: none # Need 5.2+ for the included MSBuild.
 
 install:
