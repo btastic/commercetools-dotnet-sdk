@@ -16,7 +16,7 @@ namespace commercetools.Common
         public string CurrencyCode { get; set; }
 
         [JsonProperty(PropertyName = "centAmount")]
-        public int? CentAmount { get; set; }
+        public long? CentAmount { get; set; }
 
         #endregion
 
