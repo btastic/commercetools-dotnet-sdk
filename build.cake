@@ -23,6 +23,7 @@ var modifier = "";
 var isAppveyor = BuildSystem.IsRunningOnAppVeyor;
 var dbgSuffix = configuration == "Debug" ? "-dbg" : "";
 var packageVersion = version + modifier + dbgSuffix;
+var suffix = string.Empty;
 
 //////////////////////////////////////////////////////////////////////
 // SUPPORTED FRAMEWORKS
@@ -30,9 +31,7 @@ var packageVersion = version + modifier + dbgSuffix;
 
 var AllFrameworks = new string[]
 {
-    "netstandard2.0",
-    "net46",
-    "netcoreapp2.1"
+    "netstandard2.0"
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -52,6 +51,7 @@ var IMAGE_DIR = PROJECT_DIR + "images/";
 var SOLUTION_FILE = "./commercetools.NET.sln";
 
 var TEST_PROJECT_DIR = PROJECT_DIR + "commercetools.NET.Tests/";
+var SDK_PROJECT_DIR = PROJECT_DIR + "commercetools.NET/";
 
 // Test Runners
 var NUNITLITE_RUNNER_DLL = "nunitlite-runner.dll";
@@ -119,7 +119,7 @@ Task("Clean")
     .Description("Deletes all files in the BIN directory")
     .Does(() =>
     {
-        CleanDirectory(BIN_DIR);
+        DotNetCoreClean(SOLUTION_FILE);
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -144,21 +144,6 @@ Task("Build")
     {
         DotNetCoreBuild(SOLUTION_FILE);
     });
-
-// MSBuildSettings CreateSettings()
-// {
-//     var settings = new MSBuildSettings { Verbosity = Verbosity.Minimal, Configuration = configuration };
-
-//     // Only needed when packaging
-//     settings.WithProperty("DebugType", "pdbonly");
-
-//     if (IsRunningOnWindows())
-//         settings.ToolVersion = MSBuildToolVersion.VS2017;
-//     else
-//         settings.ToolPath = Context.Tools.Resolve("msbuild");
-
-//     return settings;
-// }
 
 //////////////////////////////////////////////////////////////////////
 // TEST
@@ -188,77 +173,17 @@ Task("TestNetStandard20")
 // PACKAGE
 //////////////////////////////////////////////////////////////////////
 
-var RootFiles = new FilePath[]
-{
-    "LICENSE",
-    "README.md",
-    "CHANGELOG.md"
-};
-
-var FrameworkFiles = new FilePath[]
-{
-    "commercetools.NET.dll"
-};
-
-Task("CreateImage")
-    .Description("Copies all files into the image directory")
-    .Does(() =>
-    {
-        var currentImageDir = IMAGE_DIR + "commercetools.NET-" + packageVersion + "/";
-        var imageBinDir = currentImageDir + "bin/";
-
-        CleanDirectory(currentImageDir);
-
-        CopyFiles(RootFiles, currentImageDir);
-
-        CreateDirectory(imageBinDir);
-        Information("Created directory " + imageBinDir);
-
-        foreach (var runtime in AllFrameworks)
-        {
-            var targetDir = imageBinDir + Directory(runtime);
-            var sourceDir = SDK_BIN_DIR + Directory(runtime);
-            CreateDirectory(targetDir);
-            foreach (FilePath file in FrameworkFiles)
-            {
-                var sourcePath = sourceDir + "/" + file;
-                if (FileExists(sourcePath))
-                    CopyFileToDirectory(sourcePath, targetDir);
-            }
-        }
-    });
-
 Task("PackageSDK")
     .Description("Creates NuGet packages of the SDK")
-    .IsDependentOn("CreateImage")
     .Does(() =>
     {
-        var currentImageDir = IMAGE_DIR + "commercetools.NET-" + packageVersion + "/";
-
-        CreateDirectory(PACKAGE_DIR);
-
-        var settings = new NuGetPackSettings
+        var settings = new DotNetCorePackSettings
         {
-            Version = packageVersion,
-            BasePath = currentImageDir,
+            VersionSuffix = suffix,
+            Configuration = configuration,
             OutputDirectory = PACKAGE_DIR
         };
-        NuGetPack("commercetools.NET.nuspec", settings);
-    });
-
-Task("PackageZip")
-    .Description("Creates a ZIP file of the SDK")
-    .IsDependentOn("CreateImage")
-    .Does(() =>
-    {
-        CreateDirectory(PACKAGE_DIR);
-
-        var currentImageDir = IMAGE_DIR + "commercetools.NET-" + packageVersion + "/";
-		var zipPackage = PACKAGE_DIR + "commercetools.NET-" + packageVersion + ".zip";
-        var zipFiles =
-            GetFiles(currentImageDir + "*.*") +
-            GetFiles(currentImageDir + "bin/netstandard2.0/*.*");
-        Zip(currentImageDir, File(zipPackage), zipFiles);
+        DotNetCorePack(SDK_PROJECT_DIR, settings);
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -271,7 +196,6 @@ Task("UploadArtifacts")
     .Does(() =>
     {
         UploadArtifacts(PACKAGE_DIR, "*.nupkg");
-        UploadArtifacts(PACKAGE_DIR, "*.zip");
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -306,63 +230,63 @@ void CheckForError(ref List<string> errorDetail)
 // HELPER METHODS - TEST
 //////////////////////////////////////////////////////////////////////
 
-void RunNUnitTests(DirectoryPath workingDir, string testAssembly, string framework, ref List<string> errorDetail)
-{
-    try
-    {
-        var path = workingDir.CombineWithFilePath(new FilePath(testAssembly));
-        var settings = new NUnit3Settings();
-        if(!IsRunningOnWindows())
-            settings.Process = NUnit3ProcessOption.InProcess;
-        NUnit3(path.ToString(), settings);
-    }
-    catch(CakeException ce)
-    {
-        errorDetail.Add(string.Format("{0}: {1}", framework, ce.Message));
-    }
-}
+// void RunNUnitTests(DirectoryPath workingDir, string testAssembly, string framework, ref List<string> errorDetail)
+// {
+//     try
+//     {
+//         var path = workingDir.CombineWithFilePath(new FilePath(testAssembly));
+//         var settings = new NUnit3Settings();
+//         if(!IsRunningOnWindows())
+//             settings.Process = NUnit3ProcessOption.InProcess;
+//         NUnit3(path.ToString(), settings);
+//     }
+//     catch(CakeException ce)
+//     {
+//         errorDetail.Add(string.Format("{0}: {1}", framework, ce.Message));
+//     }
+// }
 
-void RunTest(FilePath exePath, DirectoryPath workingDir, string framework, ref List<string> errorDetail)
-{
-    RunTest(exePath, workingDir, null, framework, ref errorDetail);
-}
+// void RunTest(FilePath exePath, DirectoryPath workingDir, string framework, ref List<string> errorDetail)
+// {
+//     RunTest(exePath, workingDir, null, framework, ref errorDetail);
+// }
 
-void RunTest(FilePath exePath, DirectoryPath workingDir, string arguments, string framework, ref List<string> errorDetail)
-{
-    int rc = StartProcess(
-        MakeAbsolute(exePath),
-        new ProcessSettings()
-        {
-            Arguments = arguments,
-            WorkingDirectory = workingDir
-        });
+// void RunTest(FilePath exePath, DirectoryPath workingDir, string arguments, string framework, ref List<string> errorDetail)
+// {
+//     int rc = StartProcess(
+//         MakeAbsolute(exePath),
+//         new ProcessSettings()
+//         {
+//             Arguments = arguments,
+//             WorkingDirectory = workingDir
+//         });
 
-    if (rc > 0)
-        errorDetail.Add(string.Format("{0}: {1} tests failed", framework, rc));
-    else if (rc < 0)
-        errorDetail.Add(string.Format("{0} returned rc = {1}", exePath, rc));
-}
+//     if (rc > 0)
+//         errorDetail.Add(string.Format("{0}: {1} tests failed", framework, rc));
+//     else if (rc < 0)
+//         errorDetail.Add(string.Format("{0} returned rc = {1}", exePath, rc));
+// }
 
-void RunDotnetCoreTests(FilePath exePath, DirectoryPath workingDir, string framework, ref List<string> errorDetail)
-{
-    RunDotnetCoreTests(exePath, workingDir, null, framework, ref errorDetail);
-}
+// void RunDotnetCoreTests(FilePath exePath, DirectoryPath workingDir, string framework, ref List<string> errorDetail)
+// {
+//     RunDotnetCoreTests(exePath, workingDir, null, framework, ref errorDetail);
+// }
 
-void RunDotnetCoreTests(FilePath exePath, DirectoryPath workingDir, string arguments, string framework, ref List<string> errorDetail)
-{
-    int rc = StartProcess(
-        "dotnet",
-        new ProcessSettings()
-        {
-            Arguments = exePath + " " + arguments,
-            WorkingDirectory = workingDir
-        });
+// void RunDotnetCoreTests(FilePath exePath, DirectoryPath workingDir, string arguments, string framework, ref List<string> errorDetail)
+// {
+//     int rc = StartProcess(
+//         "dotnet",
+//         new ProcessSettings()
+//         {
+//             Arguments = exePath + " " + arguments,
+//             WorkingDirectory = workingDir
+//         });
 
-    if (rc > 0)
-        errorDetail.Add(string.Format("{0}: {1} tests failed", framework, rc));
-    else if (rc < 0)
-        errorDetail.Add(string.Format("{0} returned rc = {1}", exePath, rc));
-}
+//     if (rc > 0)
+//         errorDetail.Add(string.Format("{0}: {1} tests failed", framework, rc));
+//     else if (rc < 0)
+//         errorDetail.Add(string.Format("{0} returned rc = {1}", exePath, rc));
+// }
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
@@ -383,8 +307,7 @@ Task("Package")
     .Description("Packages all versions of the framework")
     .IsDependentOn("Build")
 	.IsDependentOn("CheckForError")
-    .IsDependentOn("PackageSDK")
-    .IsDependentOn("PackageZip");
+    .IsDependentOn("PackageSDK");
 
 Task("Appveyor")
     .Description("Builds, tests and packages on AppVeyor")

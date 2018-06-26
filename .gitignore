@@ -31,4 +31,8 @@ TestResult.xml
 *.nuget.targets
 packages/
 .vscode
+.DS_Store
 .idea/
+.dotnet/
+tools/
+images/
