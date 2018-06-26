@@ -227,68 +227,6 @@ void CheckForError(ref List<string> errorDetail)
 }
 
 //////////////////////////////////////////////////////////////////////
-// HELPER METHODS - TEST
-//////////////////////////////////////////////////////////////////////
-
-// void RunNUnitTests(DirectoryPath workingDir, string testAssembly, string framework, ref List<string> errorDetail)
-// {
-//     try
-//     {
-//         var path = workingDir.CombineWithFilePath(new FilePath(testAssembly));
-//         var settings = new NUnit3Settings();
-//         if(!IsRunningOnWindows())
-//             settings.Process = NUnit3ProcessOption.InProcess;
-//         NUnit3(path.ToString(), settings);
-//     }
-//     catch(CakeException ce)
-//     {
-//         errorDetail.Add(string.Format("{0}: {1}", framework, ce.Message));
-//     }
-// }
-
-// void RunTest(FilePath exePath, DirectoryPath workingDir, string framework, ref List<string> errorDetail)
-// {
-//     RunTest(exePath, workingDir, null, framework, ref errorDetail);
-// }
-
-// void RunTest(FilePath exePath, DirectoryPath workingDir, string arguments, string framework, ref List<string> errorDetail)
-// {
-//     int rc = StartProcess(
-//         MakeAbsolute(exePath),
-//         new ProcessSettings()
-//         {
-//             Arguments = arguments,
-//             WorkingDirectory = workingDir
-//         });
-
-//     if (rc > 0)
-//         errorDetail.Add(string.Format("{0}: {1} tests failed", framework, rc));
-//     else if (rc < 0)
-//         errorDetail.Add(string.Format("{0} returned rc = {1}", exePath, rc));
-// }
-
-// void RunDotnetCoreTests(FilePath exePath, DirectoryPath workingDir, string framework, ref List<string> errorDetail)
-// {
-//     RunDotnetCoreTests(exePath, workingDir, null, framework, ref errorDetail);
-// }
-
-// void RunDotnetCoreTests(FilePath exePath, DirectoryPath workingDir, string arguments, string framework, ref List<string> errorDetail)
-// {
-//     int rc = StartProcess(
-//         "dotnet",
-//         new ProcessSettings()
-//         {
-//             Arguments = exePath + " " + arguments,
-//             WorkingDirectory = workingDir
-//         });
-
-//     if (rc > 0)
-//         errorDetail.Add(string.Format("{0}: {1} tests failed", framework, rc));
-//     else if (rc < 0)
-//         errorDetail.Add(string.Format("{0} returned rc = {1}", exePath, rc));
-// }
-
-//////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
