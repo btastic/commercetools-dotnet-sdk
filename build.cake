@@ -51,6 +51,8 @@ var IMAGE_DIR = PROJECT_DIR + "images/";
 
 var SOLUTION_FILE = "./commercetools.NET.sln";
 
+var TEST_PROJECT_DIR = PROJECT_DIR + "commercetools.NET.Tests/";
+
 // Test Runners
 var NUNITLITE_RUNNER_DLL = "nunitlite-runner.dll";
 
@@ -143,20 +145,20 @@ Task("Build")
         DotNetCoreBuild(SOLUTION_FILE);
     });
 
-MSBuildSettings CreateSettings()
-{
-    var settings = new MSBuildSettings { Verbosity = Verbosity.Minimal, Configuration = configuration };
+// MSBuildSettings CreateSettings()
+// {
+//     var settings = new MSBuildSettings { Verbosity = Verbosity.Minimal, Configuration = configuration };
 
-    // Only needed when packaging
-    settings.WithProperty("DebugType", "pdbonly");
+//     // Only needed when packaging
+//     settings.WithProperty("DebugType", "pdbonly");
 
-    if (IsRunningOnWindows())
-        settings.ToolVersion = MSBuildToolVersion.VS2017;
-    else
-        settings.ToolPath = Context.Tools.Resolve("msbuild");
+//     if (IsRunningOnWindows())
+//         settings.ToolVersion = MSBuildToolVersion.VS2017;
+//     else
+//         settings.ToolPath = Context.Tools.Resolve("msbuild");
 
-    return settings;
-}
+//     return settings;
+// }
 
 //////////////////////////////////////////////////////////////////////
 // TEST
@@ -172,9 +174,7 @@ Task("TestNetStandard20")
     .OnError(exception => { ErrorDetail.Add(exception.Message); })
     .Does(() =>
     {
-        var runtime = "net461";
-        var dir = TEST_BIN_DIR + runtime + "/";
-        RunNUnitTests(dir, SDK_TESTS, runtime, ref ErrorDetail);
+        DotNetCoreTest(TEST_PROJECT_DIR);
 		if (isAppveyor)
 		{
 			var wc = new System.Net.WebClient();
@@ -191,7 +191,8 @@ Task("TestNetStandard20")
 var RootFiles = new FilePath[]
 {
     "LICENSE",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
 };
 
 var FrameworkFiles = new FilePath[]
