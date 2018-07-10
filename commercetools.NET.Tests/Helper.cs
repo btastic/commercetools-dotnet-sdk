@@ -48,7 +48,8 @@ namespace commercetools.NET.Tests
             {
                 var configurationBuilder = new ConfigurationBuilder()
                     .SetBasePath(System.AppContext.BaseDirectory)
-                    .AddEnvironmentVariables()
+                    .AddJsonFile("appsettings.dist.json")
+                    .AddJsonFile("appsettings.json")
                     .Build();
 
                 _configuration = new Common.Configuration(
