@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <TargetFrameworks>netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.4.0" />
@@ -13,8 +13,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\commercetools.NET\commercetools.NET.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="appsettings.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 </Project>

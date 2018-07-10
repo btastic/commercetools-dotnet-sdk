@@ -43,12 +43,13 @@ namespace commercetools.NET.Tests
         /// <returns>Configuration</returns>
         public static Configuration GetConfiguration()
         {
+            
             if (_configuration == null)
             {
                 var configurationBuilder = new ConfigurationBuilder()
                     .SetBasePath(System.AppContext.BaseDirectory)
-                    .AddJsonFile("appsettings.json")
-                    .AddEnvironmentVariables().Build();
+                    .AddEnvironmentVariables()
+                    .Build();
             
                  _configuration = new Common.Configuration(
                         configurationBuilder["commercetools.OAuthUrl"],
