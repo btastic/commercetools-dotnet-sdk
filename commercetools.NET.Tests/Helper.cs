@@ -43,32 +43,22 @@ namespace commercetools.NET.Tests
         /// <returns>Configuration</returns>
         public static Configuration GetConfiguration()
         {
-            
+
             if (_configuration == null)
             {
-//                var configurationBuilder = new ConfigurationBuilder()
-//                    .SetBasePath(System.AppContext.BaseDirectory)
-//                    .AddEnvironmentVariables()
-//                    .Build();
-//            
-//                 _configuration = new Common.Configuration(
-//                        configurationBuilder["commercetools.OAuthUrl"],
-//                        configurationBuilder["commercetools.ApiUrl"],
-//                        configurationBuilder["commercetools.ProjectKey"],
-//                        configurationBuilder["commercetools.ClientID"],
-//                        configurationBuilder["commercetools.ClientSecret"],
-//                        ProjectScope.ManageProject);
-                if (_configuration == null)
-                {
-                    _configuration = new Configuration(
-                        Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.OAuthUrl"]),
-                        Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ApiUrl"]),
-                        Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ProjectKey"]),
-                        Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ClientID"]),
-                        Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["commercetools.ClientSecret"]),
-                        ProjectScope.ManageProject);
-                }          
-            }          
+                var configurationBuilder = new ConfigurationBuilder()
+                    .SetBasePath(System.AppContext.BaseDirectory)
+                    .AddEnvironmentVariables()
+                    .Build();
+
+                _configuration = new Common.Configuration(
+                    Environment.ExpandEnvironmentVariables(configurationBuilder["commercetools.OAuthUrl"]),
+                    Environment.ExpandEnvironmentVariables(configurationBuilder["commercetools.ApiUrl"]),
+                    Environment.ExpandEnvironmentVariables(configurationBuilder["commercetools.ProjectKey"]),
+                    Environment.ExpandEnvironmentVariables(configurationBuilder["commercetools.ClientID"]),
+                    Environment.ExpandEnvironmentVariables(configurationBuilder["commercetools.ClientSecret"]),
+                    ProjectScope.ManageProject);
+            }
 
             return _configuration;
         }
