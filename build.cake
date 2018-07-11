@@ -20,7 +20,7 @@ var ErrorDetail = new List<string>();
 var version = "1.0.0";
 var modifier = "";
 
-var isAppveyor = false; // BuildSystem.IsRunningOnAppVeyor;
+var isAppveyor = BuildSystem.IsRunningOnAppVeyor;
 var dbgSuffix = configuration == "Debug" ? "-dbg" : "";
 var packageVersion = version + modifier + dbgSuffix;
 var suffix = string.Empty;
