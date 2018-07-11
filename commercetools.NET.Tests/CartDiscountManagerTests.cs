@@ -27,7 +27,7 @@ namespace commercetools.NET.Tests
         public void Init()
         {
             
-            _client = new Client(Helper.GetConfiguration(), Helper.HttpClient);
+            _client = new Client(Helper.GetConfiguration());
 
             Task<Response<Project.Project>> projectTask = _client.Project().GetProjectAsync();
             projectTask.Wait();
@@ -99,6 +99,7 @@ namespace commercetools.NET.Tests
             Assert.That(cartDiscountDraft.ValidUntil, Is.EqualTo(cartDiscount.ValidUntil).Within(1).Seconds);
             Assert.AreEqual(cartDiscountDraft.IsActive, cartDiscount.IsActive);
             Assert.AreEqual(cartDiscountDraft.RequiresDiscountCode, cartDiscount.RequiresDiscountCode);
+        
             cartDiscount.Target.Should().BeEquivalentTo(cartDiscountDraft.Target);
             cartDiscount.Value.Should().BeEquivalentTo(cartDiscountDraft.Value);
 
