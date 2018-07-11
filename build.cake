@@ -159,7 +159,13 @@ Task("TestNetStandard20")
     .OnError(exception => { ErrorDetail.Add(exception.Message); })
     .Does(() =>
     {
-        DotNetCoreTest(TEST_PROJECT_DIR);
+        var settings = new DotNetCoreTestSettings
+        {
+            Configuration = configuration,
+            // Outputing test results as XML so that VSTS can pick it up
+            ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResults.xml\"")
+        };
+        DotNetCoreTest(TEST_PROJECT_DIR,settings);
 		if (isAppveyor)
 		{
 			var wc = new System.Net.WebClient();

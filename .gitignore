@@ -20,10 +20,11 @@ bld/
 *.sap
 *.[Cc]ache
 !*.[Cc]ache/
-
+/**/*/TestResult*
 # NUNIT
 *.VisualState.xml
 TestResult.xml
+appsettings.json
 
 # NuGet
 *.nupkg
