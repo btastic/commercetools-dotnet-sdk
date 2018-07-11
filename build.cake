@@ -170,7 +170,7 @@ Task("TestNetStandard20")
 		{
 			var wc = new System.Net.WebClient();
 			var jobId = AppVeyor.Environment.JobId;
-			wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResult.xml");
+			wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResults.xml");
 		}
     });
 
