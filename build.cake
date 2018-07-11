@@ -20,7 +20,7 @@ var ErrorDetail = new List<string>();
 var version = "1.0.0";
 var modifier = "";
 
-var isAppveyor = BuildSystem.IsRunningOnAppVeyor;
+var isAppveyor = false; // BuildSystem.IsRunningOnAppVeyor;
 var dbgSuffix = configuration == "Debug" ? "-dbg" : "";
 var packageVersion = version + modifier + dbgSuffix;
 var suffix = string.Empty;
@@ -160,12 +160,12 @@ Task("TestNetStandard20")
     .Does(() =>
     {
         DotNetCoreTest(TEST_PROJECT_DIR);
-		if (isAppveyor)
-		{
-			var wc = new System.Net.WebClient();
-			var jobId = AppVeyor.Environment.JobId;
-			wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, "TestResult.xml");
-		}
+        if (isAppveyor)
+        {
+            var wc = new System.Net.WebClient();
+            var jobId = AppVeyor.Environment.JobId;
+            wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, "TestResult.xml");
+        }
     });
 
 
@@ -238,13 +238,13 @@ Task("Rebuild")
 Task("Test")
     .Description("Builds and tests all versions of the framework")
     .IsDependentOn("Build")
-	.IsDependentOn("TestNetStandard20");
+    .IsDependentOn("TestNetStandard20");
 
 
 Task("Package")
     .Description("Packages all versions of the framework")
     .IsDependentOn("Build")
-	.IsDependentOn("CheckForError")
+    .IsDependentOn("CheckForError")
     .IsDependentOn("PackageSDK");
 
 Task("Appveyor")
