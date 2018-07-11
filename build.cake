@@ -174,6 +174,8 @@ Task("TestNetStandard20")
             
             Console.WriteLine("\nResponse Received.The contents of the file uploaded are:\n{0}", 
                 System.Text.Encoding.ASCII.GetString(responseArray));
+
+            AppVeyor.UploadArtifact(TEST_PROJECT_DIR + "TestResults/TestResult.xml")     
 		}
     });
 
