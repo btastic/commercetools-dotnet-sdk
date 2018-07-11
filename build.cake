@@ -163,14 +163,14 @@ Task("TestNetStandard20")
         {
             Configuration = configuration,
             // Outputing test results as XML so that VSTS can pick it up
-            ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResults.xml\"")
+            ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResult.xml\"")
         };
         DotNetCoreTest(TEST_PROJECT_DIR,settings);
 		if (isAppveyor)
 		{
 			var wc = new System.Net.WebClient();
 			var jobId = AppVeyor.Environment.JobId;
-			wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResults.xml");
+			wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResult.xml");
 		}
     });
 
