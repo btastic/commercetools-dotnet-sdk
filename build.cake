@@ -207,13 +207,13 @@ Task("PackageSDK")
 // UPLOAD ARTIFACTS
 //////////////////////////////////////////////////////////////////////
 
-Task("UploadArtifacts")
-    .Description("Uploads artifacts to AppVeyor")
-    .IsDependentOn("Package")
-    .Does(() =>
-    {
-        UploadArtifacts(PACKAGE_DIR, "*.nupkg");
-    });
+// Task("UploadArtifacts")
+//     .Description("Uploads artifacts to AppVeyor")
+//     .IsDependentOn("Package")
+//     .Does(() =>
+//     {
+//         UploadArtifacts(PACKAGE_DIR, "*.nupkg");
+//     });
 
 //////////////////////////////////////////////////////////////////////
 // SETUP AND TEARDOWN TASKS
