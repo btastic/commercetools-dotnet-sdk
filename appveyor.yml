@@ -6,14 +6,6 @@ build_script:
 # disable built-in tests.
 test: off
 
-artifacts:
-# Store NuGet packages
-- path: .\package\**\*.nupkg
-  name: NuGet
-# Store NUnit Test Results
-- path: .\package\**\*.xml
-  name: NUnit Test Results
-
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/commercetools-dotnet-sdk/api/v2/package

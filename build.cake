@@ -62,8 +62,6 @@ var SDK_TESTS = "commercetools.NET.tests.dll";
 // Packages
 var ZIP_PACKAGE = ARTIFACTS_DIR + "commercetools.NET-" + packageVersion + ".zip";
 
-//Crate a artifacts directory
-var artifactsDirectory = Directory("./artifacts");
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -168,21 +166,21 @@ Task("TestNetStandard20")
             // Outputing test results as XML so that VSTS can pick it up
             // --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
             ArgumentCustomization = args => args.Append("--test-adapter-path:.")
-                                                .Append("--logger \"nunit;LogFileName=" + ARTIFACTS_DIR + "TestResult.xml\"")
+                                                .Append("--logger \"nunit;LogFileName=TestResult.xml\"")
         };
         DotNetCoreTest(TEST_PROJECT_DIR, settings);
-		// if (isAppveyor)
-		// {
-		// 	var wc = new System.Net.WebClient();
+		if (isAppveyor)
+		{
+			var wc = new System.Net.WebClient();
 
-		// 	var jobId = AppVeyor.Environment.JobId;
-		// 	byte[] responseArray = wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResult.xml");
+			var jobId = AppVeyor.Environment.JobId;
+			byte[] responseArray = wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResult.xml");
             
-        //     Console.WriteLine("\nResponse Received.The contents of the file uploaded are:\n{0}", 
-        //         System.Text.Encoding.ASCII.GetString(responseArray));
+            Console.WriteLine("\nResponse Received.The contents of the file uploaded are:\n{0}", 
+                System.Text.Encoding.ASCII.GetString(responseArray));
 
-        //     AppVeyor.UploadArtifact(TEST_PROJECT_DIR + "TestResults/TestResult.xml");
-		// }
+            AppVeyor.UploadArtifact(TEST_PROJECT_DIR + "TestResults/TestResult.xml");
+		}
     });
 
 
@@ -207,13 +205,13 @@ Task("PackageSDK")
 // UPLOAD ARTIFACTS
 //////////////////////////////////////////////////////////////////////
 
-// Task("UploadArtifacts")
-//     .Description("Uploads artifacts to AppVeyor")
-//     .IsDependentOn("Package")
-//     .Does(() =>
-//     {
-//         UploadArtifacts(PACKAGE_DIR, "*.nupkg");
-//     });
+Task("UploadArtifacts")
+    .Description("Uploads artifacts to AppVeyor")
+    .IsDependentOn("Package")
+    .Does(() =>
+    {
+        UploadArtifacts(ARTIFACTS_DIR, "*.nupkg");
+    });
 
 //////////////////////////////////////////////////////////////////////
 // SETUP AND TEARDOWN TASKS
@@ -268,8 +266,8 @@ Task("Appveyor")
     .Description("Builds, tests and packages on AppVeyor")
     .IsDependentOn("Build")
     .IsDependentOn("Test")
-    .IsDependentOn("Package");
-    //.IsDependentOn("UploadArtifacts");
+    .IsDependentOn("Package")
+    .IsDependentOn("UploadArtifacts");
 
 Task("Travis")
     .Description("Builds and tests on Travis")
