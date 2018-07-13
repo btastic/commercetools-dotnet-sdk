@@ -37,3 +37,4 @@ packages/
 .dotnet/
 tools/
 images/
+artifacts/

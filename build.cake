@@ -42,7 +42,7 @@ var PROJECT_DIR = Context.Environment.WorkingDirectory.FullPath + "/";
 
 Information("Project dir {0}", PROJECT_DIR);
 
-var PACKAGE_DIR = PROJECT_DIR + "package/";
+var ARTIFACTS_DIR = PROJECT_DIR + "artefacts/";
 var BIN_DIR = PROJECT_DIR + "bin/" + configuration + "/";
 var SDK_BIN_DIR = PROJECT_DIR + "commercetools.NET/bin/" + configuration + "/";
 var TEST_BIN_DIR = PROJECT_DIR + "commercetools.NET.Tests/bin/" + configuration + "/";
@@ -60,7 +60,7 @@ var NUNITLITE_RUNNER_DLL = "nunitlite-runner.dll";
 var SDK_TESTS = "commercetools.NET.tests.dll";
 
 // Packages
-var ZIP_PACKAGE = PACKAGE_DIR + "commercetools.NET-" + packageVersion + ".zip";
+var ZIP_PACKAGE = ARTIFACTS_DIR + "commercetools.NET-" + packageVersion + ".zip";
 
 //Crate a artifacts directory
 var artifactsDirectory = Directory("./artifacts");
@@ -166,9 +166,11 @@ Task("TestNetStandard20")
         {
             Configuration = configuration,
             // Outputing test results as XML so that VSTS can pick it up
-            ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=" + PACKAGE_DIR + "TestResult.xml\"")
+            // --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
+            ArgumentCustomization = args => args.Append("--test-adapter-path:.")
+                                                .Append("--logger \"nunit;LogFileName=" + ARTIFACTS_DIR + "TestResult.xml\"")
         };
-        DotNetCoreTest(TEST_PROJECT_DIR,settings);
+        DotNetCoreTest(TEST_PROJECT_DIR, settings);
 		// if (isAppveyor)
 		// {
 		// 	var wc = new System.Net.WebClient();
@@ -196,7 +198,7 @@ Task("PackageSDK")
         {
             VersionSuffix = suffix,
             Configuration = configuration,
-            OutputDirectory = PACKAGE_DIR
+            OutputDirectory = ARTIFACTS_DIR
         };
         DotNetCorePack(SDK_PROJECT_DIR, settings);
     });
