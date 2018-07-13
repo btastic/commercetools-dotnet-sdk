@@ -62,6 +62,9 @@ var SDK_TESTS = "commercetools.NET.tests.dll";
 // Packages
 var ZIP_PACKAGE = PACKAGE_DIR + "commercetools.NET-" + packageVersion + ".zip";
 
+//Crate a artifacts directory
+var artifactsDirectory = Directory("./artifacts");
+
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
@@ -163,20 +166,21 @@ Task("TestNetStandard20")
         {
             Configuration = configuration,
             // Outputing test results as XML so that VSTS can pick it up
-            ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResult.xml\"")
+            ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=" + PACKAGE_DIR + "TestResult.xml\"")
         };
         DotNetCoreTest(TEST_PROJECT_DIR,settings);
-		if (isAppveyor)
-		{
-			var wc = new System.Net.WebClient();
-			var jobId = AppVeyor.Environment.JobId;
-			byte[] responseArray = wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResult.xml");
-            
-            Console.WriteLine("\nResponse Received.The contents of the file uploaded are:\n{0}", 
-                System.Text.Encoding.ASCII.GetString(responseArray));
+		// if (isAppveyor)
+		// {
+		// 	var wc = new System.Net.WebClient();
 
-            AppVeyor.UploadArtifact(TEST_PROJECT_DIR + "TestResults/TestResult.xml");
-		}
+		// 	var jobId = AppVeyor.Environment.JobId;
+		// 	byte[] responseArray = wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/" + jobId, TEST_PROJECT_DIR + "TestResults/TestResult.xml");
+            
+        //     Console.WriteLine("\nResponse Received.The contents of the file uploaded are:\n{0}", 
+        //         System.Text.Encoding.ASCII.GetString(responseArray));
+
+        //     AppVeyor.UploadArtifact(TEST_PROJECT_DIR + "TestResults/TestResult.xml");
+		// }
     });
 
 
@@ -262,8 +266,8 @@ Task("Appveyor")
     .Description("Builds, tests and packages on AppVeyor")
     .IsDependentOn("Build")
     .IsDependentOn("Test")
-    .IsDependentOn("Package")
-    .IsDependentOn("UploadArtifacts");
+    .IsDependentOn("Package");
+    //.IsDependentOn("UploadArtifacts");
 
 Task("Travis")
     .Description("Builds and tests on Travis")
